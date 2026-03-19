@@ -27,8 +27,9 @@ def post_detail(request, post_id):
     post_id: идентификатор поста.
     """
     post = get_object_or_404(Post.objects.filter(
-        Q(pub_date__lte=timezone.now()) &
-        Q(is_published=True) & Q(category__is_published=True)
+        Q(pub_date__lte=timezone.now())
+        & Q(is_published=True)
+        & Q(category__is_published=True)
     ), pk=post_id)
     context = {'post': post}
     return render(request, 'blog/detail.html', context)
