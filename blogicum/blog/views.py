@@ -8,9 +8,7 @@ POSTS_ON_MAIN_PAGE = 5
 
 
 def posts_base():
-    """
-    Функция для получения списка опубликованных постов.
-    """
+    """Функция для получения списка опубликованных постов."""
     return Post.objects.filter(
         pub_date__lte=timezone.now(),
         is_published=True,
