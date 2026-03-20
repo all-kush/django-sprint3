@@ -10,6 +10,7 @@ class PostInline(admin.StackedInline):
     extra = 0
 
 
+@admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     inlines = (
         PostInline,
@@ -23,6 +24,7 @@ class CategoryAdmin(admin.ModelAdmin):
     )
 
 
+@admin.register(Location)
 class LocationAdmin(admin.ModelAdmin):
     inlines = (
         PostInline,
@@ -36,6 +38,7 @@ class LocationAdmin(admin.ModelAdmin):
     )
 
 
+@admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = (
         'title',
@@ -56,8 +59,3 @@ class PostAdmin(admin.ModelAdmin):
     search_fields = ('title',)
     list_filter = ('category', 'author', 'location',)
     list_display_links = ('title',)
-
-
-admin.site.register(Post, PostAdmin)
-admin.site.register(Category, CategoryAdmin)
-admin.site.register(Location, LocationAdmin)
