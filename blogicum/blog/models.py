@@ -1,11 +1,24 @@
-from django.db import models
-
 from django.contrib.auth import get_user_model
-from core.models import BaseModel, TitleModel
+from django.db import models
+from django.utils import timezone
+
 from core.constants import MAX_LENGTH
+from core.models import BaseModel, TitleModel
 
 
 User = get_user_model()
+
+
+class PostManager(models.Manager):
+    """Менеджер для опубликованных постов."""
+
+    def get_queryset(self):
+        """Функция для получения списка опубликованных постов."""
+        return super().get_queryset().filter(
+            pub_date__lte=timezone.now(),
+            is_published=True,
+            category__is_published=True
+        )
 
 
 class Location(BaseModel):
@@ -32,9 +45,6 @@ class Category(BaseModel, TitleModel):
     class Meta:
         verbose_name = 'категория'
         verbose_name_plural = 'Категории'
-
-    def __str__(self):
-        return self.title
 
 
 class Post(BaseModel, TitleModel):
@@ -65,10 +75,10 @@ class Post(BaseModel, TitleModel):
         verbose_name='Местоположение'
     )
 
+    objects = models.Manager()
+    posted = PostManager()
+
     class Meta:
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
         ordering = ('-pub_date', 'title')
-
-    def __str__(self):
-        return self.title
